@@ -1,7 +1,7 @@
+use chrono::{Duration, Local, NaiveDate};
 use clap::Parser;
-use chrono::{Local, NaiveDate, Duration};
 
-use aoc_2022::{day01};
+use aoc_2022::*;
 
 #[derive(Parser)]
 pub struct Cli {
@@ -9,14 +9,18 @@ pub struct Cli {
     day: Option<usize>,
 }
 
-
 fn main() {
     let args = Cli::parse();
     let day = {
         if let Some(day) = args.day {
             day as i64
         } else {
-            let start = NaiveDate::from_ymd_opt(2022, 12, 1).unwrap().and_hms_milli_opt(0, 0, 0, 0).unwrap().and_local_timezone(Local).unwrap();
+            let start = NaiveDate::from_ymd_opt(2022, 12, 1)
+                .unwrap()
+                .and_hms_milli_opt(0, 0, 0, 0)
+                .unwrap()
+                .and_local_timezone(Local)
+                .unwrap();
             let today = Local::now();
             let diff = today - start + Duration::days(1);
             diff.num_days()
@@ -25,10 +29,10 @@ fn main() {
 
     match day {
         1 => day01::run(),
+        2 => day02::run(),
         _ => {
             eprintln!("Day not found.");
             std::process::exit(1);
         }
     }
-
 }
