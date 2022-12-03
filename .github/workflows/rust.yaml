@@ -8,12 +8,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - uses: actions-rs/toolchain@v1
-        with:
-          toolchain: nightly
-          components: rustfmt
-          override: true
-      - uses: davidB/rust-cargo-make@v1
+
       - name: Install sccache (ubuntu-latest)
         env:
           LINK: https://github.com/mozilla/sccache/releases/download
@@ -44,6 +39,12 @@ jobs:
           key: sccache-${{ hashFiles('**/Cargo.lock') }}
           restore-keys: |
                         sccache- 
+      - uses: actions-rs/toolchain@v1
+        with:
+          toolchain: nightly
+          components: rustfmt
+          override: true
+      - uses: davidB/rust-cargo-make@v1
       - name: Check style
         env: 
           RUSTC_WRAPPER: /home/runner/.local/bin/sccache
