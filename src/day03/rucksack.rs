@@ -3,13 +3,20 @@ type priority = usize;
 
 pub fn find_badge_priority(contents: &str) -> priority {
     let mut chunk = vec![];
-    println!("Line count: {}", contents.trim().split('\n').collect::<Vec<_>>().len());
+    println!(
+        "Line count: {}",
+        contents.trim().split('\n').collect::<Vec<_>>().len()
+    );
     let mut badges_priorities = 0;
     for (lineno, line) in contents.trim().split('\n').enumerate() {
         chunk.push(line);
         if lineno % 3 == 2 {
-            let possible_badges = intersection(chunk[0], chunk[1]).into_iter().collect::<String>();
-            let team_badge = intersection(&possible_badges, chunk[2]).into_iter().collect::<String>();
+            let possible_badges = intersection(chunk[0], chunk[1])
+                .into_iter()
+                .collect::<String>();
+            let team_badge = intersection(&possible_badges, chunk[2])
+                .into_iter()
+                .collect::<String>();
             let team_priority = get_priority(&team_badge);
             badges_priorities += team_priority;
             chunk.clear();
@@ -51,7 +58,6 @@ pub fn intersection(a: &str, b: &str) -> Vec<char> {
 }
 
 pub fn find_common_badge<'a>(a: &'a str, b: &'a str, c: &'a str) -> &'a str {
-
     for (a_index, each_a) in a.chars().enumerate() {
         for (_index, each_b) in b.chars().enumerate() {
             for (_index, each_c) in c.chars().enumerate() {
@@ -118,14 +124,16 @@ mod tests {
 
     #[test]
     pub fn test_prioritize() {
-        let input = textwrap::dedent(r#"
+        let input = textwrap::dedent(
+            r#"
             vJrwpWtwJgWrhcsFMMfFFhFp
             jqHRNqRjqzjGDLGLrsFMfFZSrLrFZsSL
             PmmdzqPrVvPwwTWBwg
             wMqvLMZHhHMvwLHjbvcjnnSBnvTQFn
             ttgJtRGJQctTZtZT
             CrZsJsPPZsGzwwsLwLmpwMDw
-            "#);
+            "#,
+        );
 
         let actual = prioritize(&input.trim());
         assert_eq!(actual, 157);
@@ -133,14 +141,16 @@ mod tests {
 
     #[test]
     pub fn test_find_badge_priority() {
-        let input = textwrap::dedent(r#"
+        let input = textwrap::dedent(
+            r#"
             vJrwpWtwJgWrhcsFMMfFFhFp
             jqHRNqRjqzjGDLGLrsFMfFZSrLrFZsSL
             PmmdzqPrVvPwwTWBwg
             wMqvLMZHhHMvwLHjbvcjnnSBnvTQFn
             ttgJtRGJQctTZtZT
             CrZsJsPPZsGzwwsLwLmpwMDw
-            "#);
+            "#,
+        );
 
         let actual = find_badge_priority(&input.trim());
         assert_eq!(actual, 70);
