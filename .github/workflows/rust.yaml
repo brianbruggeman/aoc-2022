@@ -1,23 +1,36 @@
 on: [push]
 
-name: CI - Build
+name: Advent of Code CI
 
 jobs:
-  lint:
-    name: Advent of Code 2022 - Lint
+  style:
+    name: Check style
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
       - uses: actions-rs/toolchain@v1
         with:
-          toolchain: stable
+          toolchain: nightly
+          override: true
+      - uses: davidB/rust-cargo-make@v1
+      - uses: actions/checkout@v1
+      - name: Check style
+        run: make style
+  lint:
+    name: Lint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions-rs/toolchain@v1
+        with:
+          toolchain: nightly
           override: true
       - uses: davidB/rust-cargo-make@v1
       - uses: actions/checkout@v1
       - name: Lint code
         run: make lint
   test:
-    name: Advent of Code 2022 - Test
+    name: Test
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -29,8 +42,8 @@ jobs:
       - uses: actions/checkout@v1
       - name: Test code
         run: make test
-  build:
-    name: Advent of Code 2022 - Build
+  build_debug:
+    name: Build (debug)
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -42,3 +55,16 @@ jobs:
       - uses: actions/checkout@v1
       - name: Build code (debug)
         run: make build
+  run:
+    name: Run
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions-rs/toolchain@v1
+        with:
+          toolchain: stable
+          override: true
+      - uses: davidB/rust-cargo-make@v1
+      - uses: actions/checkout@v1
+      - name: Build code (debug)
+        run: make run

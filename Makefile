@@ -63,20 +63,14 @@ image::
 		--tag axum-test:latest \
 		$(CONTEXT)
 
-run:: | $(CARGO)
-	$(CARGO) run --release
-
 lint:: | $(CARGO)
 	@$(CARGO) make lint
 
-load:: | $(HEY)
-	$(eval CONCURRENT_CONNECTIONS ?= 100)
-	$(eval TIMEOUT ?= 100s)
-	$(HEY) -c $(CONCURRENT_CONNECTIONS) -z $(TIMEOUT) "$(REST_BIND)/unprotected"
+run:: | $(CARGO)
+	$(CARGO) run
 
-smoke:: | $(CARGO)
-	@echo "/      -> \c" && curl $(REST_BIND)/ && echo
-	@echo "/users -> \c" && curl $(REST_BIND)/unprotected && echo
+style:: | $(CARGO)
+	$(CARGO) make style
 
 test:: | $(CARGO)
 	$(CARGO) make test
