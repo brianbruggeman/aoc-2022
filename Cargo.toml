@@ -9,3 +9,6 @@ edition = "2021"
 chrono = "0.4.23"
 clap = { version = "4.0.29", features = ["derive", "env"] }
 rstest = "0.16.0"
+
+[dev-dependencies]
+textwrap = "0.16.0"

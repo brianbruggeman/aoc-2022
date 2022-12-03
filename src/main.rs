@@ -30,12 +30,13 @@ fn main() {
     match day {
         1 => day01::run(),
         2 => day02::run(),
+        3 => day03::run(),
         _ => {
             eprintln!(
-                "Day not found: `{}`. Running last available day (day=2)",
+                "Day not found: `{}`. Running last available day (day=3)",
                 day
             );
-            day02::run();
+            day03::run();
         }
     }
 }
