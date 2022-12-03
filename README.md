@@ -8,3 +8,9 @@ Run on the command-line:
 
     cargo run    # this will run "today"
     cargo run -- <day>   # this will run a specific day
+
+## Development
+
+Run on the command-line:
+
+    make
