@@ -179,7 +179,7 @@ jobs:
       - name: Build code (debug)
         run: make build
   run:
-    name: Run (debug)
+    name: Run (release)
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -219,5 +219,5 @@ jobs:
           override: true
       - uses: davidB/rust-cargo-make@v1
       - uses: actions/checkout@v1
-      - name: Run code (debug)
+      - name: Run code (release)
         run: make run
