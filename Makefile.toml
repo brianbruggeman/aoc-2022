@@ -11,12 +11,6 @@ toolchain = "nightly"
 command = "cargo"
 args = [
     "clippy", 
-    "--workspace",
-    "--all-targets",
-    "--all-features",
-    "--",
-    "-A",
-    "clippy::type_complexity"
     ]
 
 [tasks.build]

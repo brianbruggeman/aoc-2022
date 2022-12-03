@@ -66,6 +66,9 @@ image::
 run:: | $(CARGO)
 	$(CARGO) run --release
 
+lint:: | $(CARGO)
+	@$(CARGO) make lint
+
 load:: | $(HEY)
 	$(eval CONCURRENT_CONNECTIONS ?= 100)
 	$(eval TIMEOUT ?= 100s)
