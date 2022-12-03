@@ -31,8 +31,8 @@ fn main() {
         1 => day01::run(),
         2 => day02::run(),
         _ => {
-            eprintln!("Day not found.");
-            std::process::exit(1);
+            eprintln!("Day not found: `{}`. Running last available day (day=2)", day);
+            day02::run();
         }
     }
 }
