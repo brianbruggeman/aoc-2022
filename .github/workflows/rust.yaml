@@ -46,7 +46,7 @@ jobs:
                         sccache- 
       - name: Check style
         env: 
-          RUSTC_WRAPPER: $HOME/.local/bin/sccache
+          RUSTC_WRAPPER: /home/runner/.local/bin/sccache
         run: make style
   lint:
     name: Lint
