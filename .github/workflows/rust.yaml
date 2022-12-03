@@ -8,7 +8,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-
       - name: Install sccache (ubuntu-latest)
         env:
           LINK: https://github.com/mozilla/sccache/releases/download
@@ -54,6 +53,36 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
+      - name: Install sccache (ubuntu-latest)
+        env:
+          LINK: https://github.com/mozilla/sccache/releases/download
+          SCCACHE_BIN_NAME: sccache
+          SCCACHE_VERSION: v0.3.1
+        run: |
+          SCCACHE_FILE=$SCCACHE_BIN_NAME-$SCCACHE_VERSION-x86_64-unknown-linux-musl
+          mkdir -p $HOME/.local/bin
+          curl -L "$LINK/$SCCACHE_VERSION/$SCCACHE_FILE.tar.gz" | tar xz
+          mv -f $SCCACHE_FILE/$SCCACHE_BIN_NAME $HOME/.local/bin/sccache
+          chmod +x $HOME/.local/bin/sccache
+          echo "$HOME/.local/bin" >> $GITHUB_PATH
+      - name: Cache cargo registry
+        uses: actions/cache@v2
+        continue-on-error: false
+        with:
+          path: |
+            ~/.cargo/registry
+            ~/.cargo/git            
+          key: cargo-${{ hashFiles('**/Cargo.lock') }}
+          restore-keys: |
+                        cargo-
+      - name: Save sccache
+        uses: actions/cache@v2
+        continue-on-error: false
+        with:
+          path: $HOME/.local/bin/sccache
+          key: sccache-${{ hashFiles('**/Cargo.lock') }}
+          restore-keys: |
+                        sccache- 
       - uses: actions-rs/toolchain@v1
         with:
           toolchain: nightly
@@ -68,6 +97,36 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
+      - name: Install sccache (ubuntu-latest)
+        env:
+          LINK: https://github.com/mozilla/sccache/releases/download
+          SCCACHE_BIN_NAME: sccache
+          SCCACHE_VERSION: v0.3.1
+        run: |
+          SCCACHE_FILE=$SCCACHE_BIN_NAME-$SCCACHE_VERSION-x86_64-unknown-linux-musl
+          mkdir -p $HOME/.local/bin
+          curl -L "$LINK/$SCCACHE_VERSION/$SCCACHE_FILE.tar.gz" | tar xz
+          mv -f $SCCACHE_FILE/$SCCACHE_BIN_NAME $HOME/.local/bin/sccache
+          chmod +x $HOME/.local/bin/sccache
+          echo "$HOME/.local/bin" >> $GITHUB_PATH
+      - name: Cache cargo registry
+        uses: actions/cache@v2
+        continue-on-error: false
+        with:
+          path: |
+            ~/.cargo/registry
+            ~/.cargo/git            
+          key: cargo-${{ hashFiles('**/Cargo.lock') }}
+          restore-keys: |
+                        cargo-
+      - name: Save sccache
+        uses: actions/cache@v2
+        continue-on-error: false
+        with:
+          path: $HOME/.local/bin/sccache
+          key: sccache-${{ hashFiles('**/Cargo.lock') }}
+          restore-keys: |
+                        sccache- 
       - uses: actions-rs/toolchain@v1
         with:
           toolchain: stable
@@ -81,6 +140,36 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
+      - name: Install sccache (ubuntu-latest)
+        env:
+          LINK: https://github.com/mozilla/sccache/releases/download
+          SCCACHE_BIN_NAME: sccache
+          SCCACHE_VERSION: v0.3.1
+        run: |
+          SCCACHE_FILE=$SCCACHE_BIN_NAME-$SCCACHE_VERSION-x86_64-unknown-linux-musl
+          mkdir -p $HOME/.local/bin
+          curl -L "$LINK/$SCCACHE_VERSION/$SCCACHE_FILE.tar.gz" | tar xz
+          mv -f $SCCACHE_FILE/$SCCACHE_BIN_NAME $HOME/.local/bin/sccache
+          chmod +x $HOME/.local/bin/sccache
+          echo "$HOME/.local/bin" >> $GITHUB_PATH
+      - name: Cache cargo registry
+        uses: actions/cache@v2
+        continue-on-error: false
+        with:
+          path: |
+            ~/.cargo/registry
+            ~/.cargo/git            
+          key: cargo-${{ hashFiles('**/Cargo.lock') }}
+          restore-keys: |
+                        cargo-
+      - name: Save sccache
+        uses: actions/cache@v2
+        continue-on-error: false
+        with:
+          path: $HOME/.local/bin/sccache
+          key: sccache-${{ hashFiles('**/Cargo.lock') }}
+          restore-keys: |
+                        sccache- 
       - uses: actions-rs/toolchain@v1
         with:
           toolchain: stable
@@ -94,6 +183,36 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
+      - name: Install sccache (ubuntu-latest)
+        env:
+          LINK: https://github.com/mozilla/sccache/releases/download
+          SCCACHE_BIN_NAME: sccache
+          SCCACHE_VERSION: v0.3.1
+        run: |
+          SCCACHE_FILE=$SCCACHE_BIN_NAME-$SCCACHE_VERSION-x86_64-unknown-linux-musl
+          mkdir -p $HOME/.local/bin
+          curl -L "$LINK/$SCCACHE_VERSION/$SCCACHE_FILE.tar.gz" | tar xz
+          mv -f $SCCACHE_FILE/$SCCACHE_BIN_NAME $HOME/.local/bin/sccache
+          chmod +x $HOME/.local/bin/sccache
+          echo "$HOME/.local/bin" >> $GITHUB_PATH
+      - name: Cache cargo registry
+        uses: actions/cache@v2
+        continue-on-error: false
+        with:
+          path: |
+            ~/.cargo/registry
+            ~/.cargo/git            
+          key: cargo-${{ hashFiles('**/Cargo.lock') }}
+          restore-keys: |
+                        cargo-
+      - name: Save sccache
+        uses: actions/cache@v2
+        continue-on-error: false
+        with:
+          path: $HOME/.local/bin/sccache
+          key: sccache-${{ hashFiles('**/Cargo.lock') }}
+          restore-keys: |
+                        sccache- 
       - uses: actions-rs/toolchain@v1
         with:
           toolchain: stable
