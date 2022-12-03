@@ -179,7 +179,7 @@ jobs:
       - name: Build code (debug)
         run: make build
   run:
-    name: Run
+    name: Run (debug)
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
