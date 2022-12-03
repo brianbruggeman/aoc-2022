@@ -11,12 +11,19 @@ pub fn calculate(input: Option<&str>, count: usize) -> usize {
     for elf in elves.iter() {
         let mut calories = 0;
         for calorie_count in elf.split('\n') {
-            calories += calorie_count.parse::<usize>().expect("Could not parse calorie");
+            calories += calorie_count
+                .parse::<usize>()
+                .expect("Could not parse calorie");
         }
         elf_calories.push(calories);
     }
     elf_calories.sort_by_key(|w| Reverse(*w));
-    let calories = elf_calories.iter().enumerate().filter(|(idx, _)| idx < &count).map(|(_, value)| value).sum();
+    let calories = elf_calories
+        .iter()
+        .enumerate()
+        .filter(|(idx, _)| idx < &count)
+        .map(|(_, value)| value)
+        .sum();
     calories
 }
 
