@@ -47,7 +47,7 @@ pub fn calculate_overlap(elves: [&str; 2]) -> usize {
     let (right_elf_min, right_elf_max) = split_range(elves[1]);
     let left_elf_range = left_elf_min..=left_elf_max;
     let right_elf_range = right_elf_min..=right_elf_max;
-    if ((left_elf_range.contains(&right_elf_min) || left_elf_range.contains(&right_elf_max)) || (right_elf_range.contains(&left_elf_min) || right_elf_range.contains(&left_elf_max))) {
+    if (left_elf_range.contains(&right_elf_min) || left_elf_range.contains(&right_elf_max)) || (right_elf_range.contains(&left_elf_min) || right_elf_range.contains(&left_elf_max)) {
         return 1;
     }
     0
@@ -58,7 +58,7 @@ pub fn calculate_contained(elves: [&str; 2]) -> usize {
     let (right_elf_min, right_elf_max) = split_range(elves[1]);
     let left_elf_range = left_elf_min..=left_elf_max;
     let right_elf_range = right_elf_min..=right_elf_max;
-    if ((left_elf_range.contains(&right_elf_min) && left_elf_range.contains(&right_elf_max)) || (right_elf_range.contains(&left_elf_min) && right_elf_range.contains(&left_elf_max))) {
+    if (left_elf_range.contains(&right_elf_min) && left_elf_range.contains(&right_elf_max)) || (right_elf_range.contains(&left_elf_min) && right_elf_range.contains(&left_elf_max)) {
         return 1;
     }
     0
