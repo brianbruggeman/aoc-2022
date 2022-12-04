@@ -37,8 +37,8 @@ impl Default for Player {
 impl fmt::Display for Player {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         match self {
-            Self::Other(player_move) => write!(f, "Other({})", player_move),
-            Self::Me(player_move) => write!(f, "Me({})", player_move),
+            Self::Other(player_move) => write!(f, "Other({player_move})"),
+            Self::Me(player_move) => write!(f, "Me({player_move})"),
             _ => write!(f, "No One"),
         }
     }

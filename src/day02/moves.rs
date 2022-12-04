@@ -63,10 +63,10 @@ impl From<&str> for Move {
 impl fmt::Display for Move {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         match self {
-            Self::Rock => write!(f, "{}", "Rock"),
-            Self::Paper => write!(f, "{}", "Paper"),
-            Self::Scissors => write!(f, "{}", "Scissors"),
-            _ => write!(f, "{}", "Undefined"),
+            Self::Rock => write!(f, "Rock"),
+            Self::Paper => write!(f, "Paper"),
+            Self::Scissors => write!(f, "Scissors"),
+            _ => write!(f, "Undefined"),
         }
     }
 }

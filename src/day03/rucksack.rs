@@ -3,10 +3,6 @@ type priority = usize;
 
 pub fn find_badge_priority(contents: &str) -> priority {
     let mut chunk = vec![];
-    println!(
-        "Line count: {}",
-        contents.trim().split('\n').collect::<Vec<_>>().len()
-    );
     let mut badges_priorities = 0;
     for (lineno, line) in contents.trim().split('\n').enumerate() {
         chunk.push(line);
@@ -28,10 +24,10 @@ pub fn find_badge_priority(contents: &str) -> priority {
 pub fn prioritize(contents: &str) -> priority {
     contents
         .split('\n')
-        .map(|line| compartmentize(line))
+        .map(compartmentize)
         .map(|(compartment1, compartment2)| find_common_letter(compartment1, compartment2))
         .filter(|common_character| !common_character.is_empty())
-        .map(|common_character| get_priority(common_character))
+        .map(get_priority)
         .sum()
 }
 
@@ -57,19 +53,6 @@ pub fn intersection(a: &str, b: &str) -> Vec<char> {
     common
 }
 
-pub fn find_common_badge<'a>(a: &'a str, b: &'a str, c: &'a str) -> &'a str {
-    for (a_index, each_a) in a.chars().enumerate() {
-        for (_index, each_b) in b.chars().enumerate() {
-            for (_index, each_c) in c.chars().enumerate() {
-                if each_a == each_b && each_a == each_c {
-                    return &a[a_index..(a_index + 1)];
-                }
-            }
-        }
-    }
-    ""
-}
-
 pub fn get_priority(letter: &str) -> priority {
     let lowercase_offset = 96;
     let uppercase_offset = 64;
@@ -82,7 +65,7 @@ pub fn get_priority(letter: &str) -> priority {
     }
 }
 
-pub fn compartmentize<'a>(line: &'a str) -> (&'a str, &'a str) {
+pub fn compartmentize(line: &str) -> (&str, &str) {
     let split = line.len() / 2;
     (&line[..split], &line[split..])
 }

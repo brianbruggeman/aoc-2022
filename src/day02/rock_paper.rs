@@ -9,7 +9,7 @@ pub fn play_round_1(moves: &str) -> usize {
     moves
         .split('\n')
         .filter(|line| !line.trim().is_empty())
-        .map(|line| extract_moves(line))
+        .map(extract_moves)
         .map(|(other, me)| score_move(other, me))
         .sum()
 }
@@ -18,7 +18,7 @@ pub fn play_round_2(moves: &str) -> usize {
     moves
         .split('\n')
         .filter(|line| !line.trim().is_empty())
-        .map(|line| extract_new_rules_moves(line))
+        .map(extract_new_rules_moves)
         .map(|(other, me)| score_move(other, me))
         .sum()
 }

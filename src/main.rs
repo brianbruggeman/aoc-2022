@@ -32,10 +32,7 @@ fn main() {
         2 => day02::run(),
         3 => day03::run(),
         _ => {
-            eprintln!(
-                "Day not found: `{}`. Running last available day (day=3)",
-                day
-            );
+            eprintln!("Day not found: `{day}`. Running last available day (day=3)");
             day03::run();
         }
     }

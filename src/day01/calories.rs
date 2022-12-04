@@ -35,9 +35,9 @@ fn parse(input: &str) -> Vec<String> {
             elves.push(values);
             values = "".to_string();
         } else {
-            match values == "" {
+            match values.is_empty() {
                 true => values = line.to_string(),
-                false => values = format!("{}\n{}", values, line),
+                false => values = format!("{values}\n{line}"),
             }
         }
     }
