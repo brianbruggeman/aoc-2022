@@ -80,9 +80,10 @@ fn main() {
         6 => day06::run(),
         7 => day07::run(args.example),
         8 => day08::run(args.example),
+        9 => day09::run(args.example),
         _ => {
-            eprintln!("Day not found: `{day}`. Running last available day (day=8)");
-            day08::run(args.example);
+            eprintln!("Day not found: `{day}`. Running last available day (day=9)");
+            day09::run(args.example);
         }
     }
 }
