@@ -62,8 +62,8 @@ impl File {
 
 pub fn find_good_deletion_candidates(log: &str) -> usize {
     folder_sizes_below(log, 100_000)
-        .iter()
-        .map(|(_path, file)| file.size())
+        .values()
+        .map(|file| file.size())
         .sum()
 }
 
@@ -72,8 +72,7 @@ pub fn folder_to_delete(log: &str) -> usize {
     let total_space_available = 70_000_000;
     let space_needed = 30_000_000;
     let space_to_delete = used_space - (total_space_available - space_needed);
-    let deleted = folder_sizes_above(log, space_to_delete);
-    deleted
+    folder_sizes_above(log, space_to_delete)
 }
 
 pub fn largest_folder_size(log: &str) -> usize {
@@ -85,12 +84,6 @@ pub fn largest_folder_size(log: &str) -> usize {
 }
 
 pub fn folder_sizes_above(log: &str, upper_threshold: usize) -> usize {
-    // let sizes = build_sizes(log)
-    //     .iter()
-    //     .filter(|(_file_path, file)| matches!(file, File::Directory(file_data) if file_data.size <= 100_000))
-    //     .map(|(fp, fd)| (fp.clone(), fd.clone()))
-    //     .collect::<HashMap<_, _>>()
-    //     ;
     build_sizes(log)
         .iter()
         .filter(|(_file_path, file)| {
@@ -122,7 +115,7 @@ pub fn build_sizes(log: &str) -> HashMap<SomePath, File> {
                     Some(s) => match s.as_str() {
                         "/" => cwd = Some(format!("/{path}")),
                         _ => cwd = Some(format!("{s}/{path}")),
-                    }
+                    },
                     None => {
                         cwd = Some(path.clone());
                     }
@@ -139,7 +132,7 @@ pub fn build_sizes(log: &str) -> HashMap<SomePath, File> {
                     Some(s) => match s.as_str() {
                         "/" => format!("/{}", &data.path),
                         _ => format!("{s}/{}", &data.path),
-                    }
+                    },
                     None => data.path.clone(),
                 };
                 sizes
@@ -151,7 +144,7 @@ pub fn build_sizes(log: &str) -> HashMap<SomePath, File> {
                     Some(s) => match s.as_str() {
                         "/" => format!("/{}", &data.path),
                         _ => format!("{s}/{}", &data.path),
-                    }
+                    },
                     None => data.path.clone(),
                 };
                 let file_size = data.size;
@@ -174,7 +167,6 @@ pub fn build_sizes(log: &str) -> HashMap<SomePath, File> {
                             let parent_data = PathData::new(&parent_path, file_size);
                             debug!(" +++ | {:>6}: +{} [now: {}] (fp={full_path})", parent_path, file_size, file_size);
                             sizes.insert(parent_path.to_string(), File::Directory(parent_data));
-
                         }
                     }
                     parent_path = dir(&parent_path).to_string();

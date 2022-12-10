@@ -16,14 +16,14 @@ pub fn run(use_example: bool) {
 #[cfg(test)]
 mod tests {
     use super::no_space::{find_good_deletion_candidates, folder_to_delete};
-    
+
     #[test]
     pub fn test_find_good_deletion_candidates() {
         let data = include_str!("example.txt");
         let actual = find_good_deletion_candidates(data);
         assert_eq!(actual, 95_437);
     }
-    
+
     #[test]
     pub fn test_folder_to_delete() {
         let data = include_str!("example.txt");

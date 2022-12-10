@@ -2,7 +2,7 @@ use std::{fs::File, sync::Arc};
 
 use chrono::{Duration, Local, NaiveDate};
 use clap::Parser;
-use tracing_subscriber::{filter, prelude::*};
+use tracing_subscriber::{filter, prelude::*, EnvFilter};
 
 use aoc_2022::*;
 
@@ -18,14 +18,15 @@ pub struct Cli {
 }
 
 fn init_logging() {
-    let stdout_log = tracing_subscriber::fmt::layer()
-        .pretty();
+    let stdout_log = tracing_subscriber::fmt::layer().pretty();
 
     // A layer that logs events to a file.
     let file = File::create("debug.log");
-    let file = match file  {Ok(file) => file,Err(error) => panic!("Error: {:?}",error),};
-    let debug_log = tracing_subscriber::fmt::layer()
-        .with_writer(Arc::new(file));
+    let file = match file {
+        Ok(file) => file,
+        Err(error) => panic!("Error: {error:?}"),
+    };
+    let debug_log = tracing_subscriber::fmt::layer().with_writer(Arc::new(file));
 
     // A layer that collects metrics using specific events.
     let metrics_layer = /* ... */ filter::LevelFilter::INFO;
@@ -40,17 +41,14 @@ fn init_logging() {
                 .and_then(debug_log)
                 // Add a filter to *both* layers that rejects spans and
                 // events whose targets start with `metrics`.
-                .with_filter(filter::filter_fn(|metadata| {
-                    !metadata.target().starts_with("metrics")
-                }))
+                .with_filter(filter::filter_fn(|metadata| !metadata.target().starts_with("metrics"))),
         )
         .with(
             // Add a filter to the metrics label that *only* enables
             // events whose targets start with `metrics`.
-            metrics_layer.with_filter(filter::filter_fn(|metadata| {
-                metadata.target().starts_with("metrics")
-            }))
+            metrics_layer.with_filter(filter::filter_fn(|metadata| metadata.target().starts_with("metrics"))),
         )
+        .with(EnvFilter::from_default_env())
         .init();
 }
 
@@ -81,9 +79,10 @@ fn main() {
         5 => day05::run(),
         6 => day06::run(),
         7 => day07::run(args.example),
+        8 => day08::run(args.example),
         _ => {
-            eprintln!("Day not found: `{day}`. Running last available day (day=7)");
-            day07::run(args.example);
+            eprintln!("Day not found: `{day}`. Running last available day (day=8)");
+            day08::run(args.example);
         }
     }
 }

@@ -10,7 +10,7 @@ chrono = "0.4.23"
 clap = { version = "4.0.29", features = ["derive", "env"] }
 rstest = "0.16.0"
 tracing = "0.1.37"
-tracing-subscriber = "0.3.16"
+tracing-subscriber = { version = "0.3.16", features = ["env-filter"] }
 
 [dev-dependencies]
 textwrap = "0.16.0"
