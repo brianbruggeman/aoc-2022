@@ -24,7 +24,7 @@ pub fn calculate_scenic_score(position: &Position, tree: &BTreeMap<Position, Cel
                 .filter(|p| p != &position)
             {
                 count += 1;
-                let ray_cell = tree.get(&ray_position).unwrap();
+                let ray_cell = tree.get(ray_position).unwrap();
                 trace!(" --- {position}:{cell}:{direction:?} => {ray_cell}");
                 if ray_cell.value() >= cell.value() {
                     break;

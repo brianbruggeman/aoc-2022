@@ -2,7 +2,7 @@ use std::{collections::HashSet, fmt, ops};
 
 use tracing::{debug, trace};
 
-#[derive(Copy, Clone, Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
+#[derive(Copy, Clone, Debug, Default, PartialEq, Eq, PartialOrd, Ord, Hash)]
 pub struct Position {
     y: i32,
     x: i32,
@@ -11,12 +11,6 @@ pub struct Position {
 impl fmt::Display for Position {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         write!(f, "(y={}, x={})", self.y, self.x)
-    }
-}
-
-impl Default for Position {
-    fn default() -> Self {
-        Self { y: 0, x: 0 }
     }
 }
 
@@ -64,34 +58,51 @@ impl fmt::Display for Update {
     }
 }
 
-pub fn count_tail_position(moves: &str) -> usize {
-    let mut head_position = Position::default();
-    let mut tail_position = Position::default();
-    let mut tail_positions = vec![head_position];
+pub fn count_tail_position(moves: &str, knot_count: usize) -> usize {
+    let mut positions: Vec<Position> = vec![Position::default(); knot_count];
+    let mut tail_positions = vec![Position::default()];
 
-    parse_moves(moves).iter().for_each(|head_move| {
-        let old_position = head_position;
-        head_position = calculate_position(&head_position, head_move);
-        trace!("Head: {old_position} + {head_move} => {head_position}");
-        let tail_direction = calculate_direction(&head_position, &tail_position);
-        if !is_touching(&head_position, &tail_position) {
-            let old_tail = tail_position;
-            tail_position = tail_position + Update::new(tail_direction, 1);
-            tail_positions.push(tail_position);
-            trace!("{old_tail} + {tail_direction} => {tail_position}");
-        } else {
-            trace!("{tail_position} + {tail_direction} => No Move");
-        }
-    });
+    parse_moves(moves)
+        .iter()
+        .enumerate()
+        .for_each(|(move_id, head_move)| {
+            let mut next_update = *head_move;
+            let mut last_position = positions[0];
+            // Propegate move through chain of knots and record the tail position
+            for (position_id, position) in positions.iter_mut().enumerate() {
+                debug!("{move_id}:{position_id}: Update: {position} (current)");
+                if position_id > 0 {
+                    if !is_touching(&last_position, position) {
+                        let direction = calculate_direction(&last_position, position);
+                        if direction == Direction::Stationary {
+                            debug!("{move_id}:{position_id}: No update. Halting updates");
+                            break;
+                        }
+                        next_update = Update::new(direction, 1);
+                    } else {
+                        debug!("{move_id}:{position_id}: No update. Halting updates");
+                        break;
+                    }
+                }
+                if next_update.direction == Direction::Stationary {
+                    debug!("{move_id}:{position_id}: No update.");
+                    break;
+                }
+                *position = *position + next_update;
+                debug!("{move_id}:{position_id}: Update: {position} **updated**");
+                last_position = *position;
+                if position_id == knot_count - 1 {
+                    debug!("Updated tail: {}", position);
+                    tail_positions.push(*position)
+                }
+            }
+            debug!("Positions: {:?}", positions);
+        });
     let steps = tail_positions
         .iter()
-        .map(|p| *p)
+        .copied()
         .collect::<HashSet<Position>>();
-    steps.iter().count()
-}
-
-pub fn calculate_position(position: &Position, update: &Update) -> Position {
-    *position + *update
+    steps.len()
 }
 
 pub fn calculate_direction(head_pos: &Position, tail_pos: &Position) -> Direction {
@@ -119,7 +130,7 @@ pub fn is_touching(pos1: &Position, pos2: &Position) -> bool {
     (pos1.x - 1..=pos1.x + 1).contains(&pos2.x) && (pos1.y - 1..=pos1.y + 1).contains(&pos2.y)
 }
 
-#[derive(Copy, Clone, Debug)]
+#[derive(Copy, Clone, Debug, PartialEq, Eq, PartialOrd, Ord)]
 pub enum Direction {
     Up,
     Down,
@@ -164,7 +175,7 @@ pub fn parse_moves(positions: &str) -> Vec<Update> {
             let (direction, size) = line.split_once(' ').unwrap();
             let direction = Direction::from(direction);
             let size = size.parse::<usize>().unwrap();
-            (0..size).map(move |_| Update::new(direction.clone(), 1))
+            (0..size).map(move |_| Update::new(direction, 1))
         })
         .inspect(|u| trace!("Move: {u}"))
         .collect::<Vec<_>>()
